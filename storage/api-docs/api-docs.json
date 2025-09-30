@@ -1,0 +1,587 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tinder App API",
+        "description": "API for Tinder-like dating app MVP",
+        "contact": {
+            "email": "admin@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/v1/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health check endpoint",
+                "operationId": "0ba9f6500e6ccd24cd315b2d7b5021a2",
+                "responses": {
+                    "200": {
+                        "description": "API is healthy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "API is healthy"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "time": {
+                                                    "type": "string",
+                                                    "example": "2025-09-29T10:05:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/people/{id}/like": {
+            "post": {
+                "tags": [
+                    "Interactions"
+                ],
+                "summary": "Like a person",
+                "operationId": "c8b7fba08d531bdba51f5432e983afe0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Person ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Like recorded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Like recorded successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "person_id": {
+                                                    "type": "integer",
+                                                    "example": 57
+                                                },
+                                                "action": {
+                                                    "type": "string",
+                                                    "example": "like"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "recorded"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Duplicate like",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "DUPLICATE_LIKE"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You have already liked this person."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "person_id": {
+                                                    "type": "integer",
+                                                    "example": 57
+                                                },
+                                                "action": {
+                                                    "type": "string",
+                                                    "example": "like"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "duplicate"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "UserIdHeader": []
+                    }
+                ]
+            }
+        },
+        "/v1/people/{id}/dislike": {
+            "post": {
+                "tags": [
+                    "Interactions"
+                ],
+                "summary": "Dislike a person",
+                "operationId": "e8c0284147b494814e63a5a0423bf0cf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Person ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Dislike recorded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dislike recorded successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "person_id": {
+                                                    "type": "integer",
+                                                    "example": 58
+                                                },
+                                                "action": {
+                                                    "type": "string",
+                                                    "example": "dislike"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "recorded"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "UserIdHeader": []
+                    }
+                ]
+            }
+        },
+        "/v1/likes": {
+            "get": {
+                "tags": [
+                    "Interactions"
+                ],
+                "summary": "Get list of liked people",
+                "operationId": "9a0aa70e086b3ecf978313b82b15782c",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of liked people",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "List of liked people"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Person"
+                                                    }
+                                                },
+                                                "meta": {
+                                                    "properties": {
+                                                        "page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "UserIdHeader": []
+                    }
+                ]
+            }
+        },
+        "/v1/recommendations": {
+            "get": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Get list of recommended people",
+                "operationId": "b0e8cb534e8ff931e4f834d2842695ca",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of recommended people",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "List of recommended people"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Person"
+                                                    }
+                                                },
+                                                "meta": {
+                                                    "properties": {
+                                                        "page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 85
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "UserIdHeader": []
+                    }
+                ]
+            }
+        },
+        "/v1/people/{id}": {
+            "get": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Get person detail",
+                "operationId": "ae393d239349719e6055e61beff17a2d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Person ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Person detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "SUCCESS"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Person detail"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Person"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Person not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "PERSON_NOT_FOUND"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Person not found."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "UserIdHeader": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Person": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 116
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ayu"
+                    },
+                    "age": {
+                        "type": "integer",
+                        "example": 26
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Jakarta"
+                    },
+                    "pictures": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "example": "https://.../ayu1.jpg"
+                                },
+                                "order": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Picture": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "https://.../ayu1.jpg"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "InteractionResult": {
+                "properties": {
+                    "person_id": {
+                        "type": "integer",
+                        "example": 116
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "like",
+                            "dislike"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "recorded",
+                            "duplicate"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Error": {
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "example": "ERROR_CODE"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Error description"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "UserIdHeader": {
+                "type": "apiKey",
+                "description": "User ID for testing (UUID format)",
+                "name": "X-User-Id",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Health",
+            "description": "Health check endpoints"
+        },
+        {
+            "name": "Interactions",
+            "description": "Interaction endpoints (like/dislike)"
+        },
+        {
+            "name": "Recommendations",
+            "description": "Recommendation endpoints"
+        }
+    ]
+}
